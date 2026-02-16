@@ -1,7 +1,7 @@
 // Configuración de la aplicación
 const Config = {
     // URL del Google Sheet publicado (CSV)
-    SHEET_CSV_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR-YlOPRyCccEw9SXmoz3s6j-SF3SajvnQC8bnqyGaMSbUkVmRY6DYJfDLZwDo5lqznPJ55IwB7dNrD/pub?gid=0&single=true&output=csv',
+    SHEET_CSV_URL: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQlQRicdcGE8Mnm5Un2giCB4pDhmXE7-3a4K99CmR5wYqxJHK26bno3HYXb2ZhwajD6Uv2nY21OsXRc/pub?gid=1752239549&single=true&output=csv',
 
     // Rango de fechas del calendario
     START_DATE: new Date(2026, 1, 15), // 15 febrero 2026
