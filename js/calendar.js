@@ -83,11 +83,13 @@ const Calendar = {
                 dayDiv.classList.add('upload-day');
             }
 
-            // Tiene tareas personalizadas de alta prioridad
-            const customTasks = Config.getCustomTasksForDate(dateKey);
-            if (customTasks.some(t => t.priority === 'alta')) {
+            // Tiene tareas personalizadas de alta prioridad (combina localStorage + Sheet)
+            const localTasks = Config.getCustomTasksForDate(dateKey);
+            const sheetCustomTasks = Sheets.getCustomTasksForDate(dateKey);
+            const allCustomTasks = [...localTasks, ...sheetCustomTasks];
+            if (allCustomTasks.some(t => t.priority === 'alta')) {
                 dayDiv.classList.add('has-high-priority');
-            } else if (customTasks.length > 0) {
+            } else if (allCustomTasks.length > 0) {
                 dayDiv.classList.add('has-tasks');
             }
 
@@ -165,10 +167,13 @@ const Calendar = {
             tasksList.innerHTML = '<div class="task-item empty">No hay tareas programadas en el Sheet</div>';
         }
 
-        // Tareas personalizadas
-        const customTasks = Config.getCustomTasksForDate(dateKey);
-        if (customTasks.length > 0) {
-            customTasksList.innerHTML = customTasks.map(task => `
+        // Tareas personalizadas (combina localStorage + Sheet)
+        const localTasks = Config.getCustomTasksForDate(dateKey);
+        const sheetCustomTasks = Sheets.getCustomTasksForDate(dateKey);
+        const allCustomTasks = [...sheetCustomTasks, ...localTasks];
+
+        if (allCustomTasks.length > 0) {
+            customTasksList.innerHTML = allCustomTasks.map(task => `
                 <div class="task-item">
                     <span class="task-time">${task.time}</span>
                     <span class="task-description">${task.description}</span>

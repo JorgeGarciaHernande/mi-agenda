@@ -2,18 +2,51 @@
 const Sheets = {
     data: [],
     dataByDate: {},
+    customTasks: [], // Tareas personalizadas del Sheet
 
     // Cargar datos del Google Sheet
     async load() {
         try {
+            // Cargar calendario CSV
             const response = await fetch(Config.SHEET_CSV_URL);
             const csvText = await response.text();
             this.parseCSV(csvText);
+
+            // Cargar tareas personalizadas del Apps Script
+            await this.loadCustomTasks();
+
             return true;
         } catch (error) {
             console.error('Error cargando Google Sheet:', error);
             return false;
         }
+    },
+
+    // Cargar tareas personalizadas desde el Apps Script
+    async loadCustomTasks() {
+        const appsScriptUrl = Config.APPS_SCRIPT_URL || Config.get('APPS_SCRIPT_URL');
+
+        if (!appsScriptUrl) {
+            console.log('No hay URL de Apps Script configurada');
+            return;
+        }
+
+        try {
+            const response = await fetch(appsScriptUrl);
+            const data = await response.json();
+
+            if (data.success && data.tasks) {
+                this.customTasks = data.tasks;
+                console.log(`Cargadas ${this.customTasks.length} tareas personalizadas del Sheet`);
+            }
+        } catch (error) {
+            console.error('Error cargando tareas personalizadas:', error);
+        }
+    },
+
+    // Obtener tareas personalizadas de una fecha
+    getCustomTasksForDate(dateKey) {
+        return this.customTasks.filter(t => t.date === dateKey);
     },
 
     // Parsear CSV a objetos
