@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Agenda - Calendario YouTube 2026</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Mi Agenda</h1>
+            <p class="subtitle">Calendario de Producción YouTube 2026-2027</p>
+        </header>
+
+        <!-- Navegación del calendario -->
+        <div class="calendar-nav">
+            <button id="prevMonth" class="nav-btn">&larr; Anterior</button>
+            <h2 id="currentMonth">Febrero 2026</h2>
+            <button id="nextMonth" class="nav-btn">Siguiente &rarr;</button>
+        </div>
+
+        <!-- Calendario -->
+        <div class="calendar-container">
+            <div class="calendar-header">
+                <div class="day-name">Dom</div>
+                <div class="day-name">Lun</div>
+                <div class="day-name">Mar</div>
+                <div class="day-name">Mié</div>
+                <div class="day-name">Jue</div>
+                <div class="day-name">Vie</div>
+                <div class="day-name">Sáb</div>
+            </div>
+            <div id="calendarGrid" class="calendar-grid">
+                <!-- Días generados dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Leyenda -->
+        <div class="legend">
+            <div class="legend-item">
+                <span class="legend-color has-tasks"></span>
+                <span>Con tareas</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color upload-day"></span>
+                <span>Día de subida</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color priority-high"></span>
+                <span>Prioridad alta</span>
+            </div>
+        </div>
+
+        <!-- Botón agregar tarea -->
+        <button id="btnAddTask" class="btn-add-task">+ Agregar Tarea</button>
+    </div>
+
+    <!-- Modal: Detalle del día -->
+    <div id="dayModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeDayModal">&times;</button>
+            <h2 id="modalDate">15 de Febrero, 2026</h2>
+            <p id="modalCycle" class="modal-cycle">→ Video MIÉRCOLES</p>
+
+            <div class="tasks-section">
+                <h3>Tareas del día</h3>
+                <div id="tasksList" class="tasks-list">
+                    <!-- Tareas generadas dinámicamente -->
+                </div>
+            </div>
+
+            <div class="custom-tasks-section">
+                <h3>Tareas personalizadas</h3>
+                <div id="customTasksList" class="tasks-list">
+                    <!-- Tareas personalizadas -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Agregar tarea -->
+    <div id="addTaskModal" class="modal">
+        <div class="modal-content modal-form">
+            <button class="modal-close" id="closeAddModal">&times;</button>
+            <h2>Agregar Nueva Tarea</h2>
+
+            <form id="taskForm">
+                <div class="form-group">
+                    <label for="taskDate">Fecha</label>
+                    <input type="date" id="taskDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskTime">Hora</label>
+                    <input type="time" id="taskTime" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskDescription">Descripción de la tarea</label>
+                    <textarea id="taskDescription" rows="3" placeholder="Ej: Ir al gym, hacer la tarea..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskPriority">Prioridad</label>
+                    <select id="taskPriority" required>
+                        <option value="normal">Normal</option>
+                        <option value="alta">Alta (envía notificación)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-submit">Guardar Tarea</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Configuración -->
+    <div id="configModal" class="modal">
+        <div class="modal-content modal-form">
+            <button class="modal-close" id="closeConfigModal">&times;</button>
+            <h2>Configuración</h2>
+
+            <form id="configForm">
+                <div class="form-group">
+                    <label for="telegramToken">Token del Bot de Telegram</label>
+                    <input type="text" id="telegramToken" placeholder="123456789:ABCdefGHIjklMNOpqrsTUVwxyz">
+                </div>
+
+                <div class="form-group">
+                    <label for="telegramChatId">Tu Chat ID de Telegram</label>
+                    <input type="text" id="telegramChatId" placeholder="123456789">
+                </div>
+
+                <div class="form-group">
+                    <label for="appsScriptUrl">URL de Google Apps Script (para guardar)</label>
+                    <input type="text" id="appsScriptUrl" placeholder="https://script.google.com/macros/s/.../exec">
+                </div>
+
+                <button type="submit" class="btn-submit">Guardar Configuración</button>
+            </form>
+
+            <div class="config-help">
+                <h4>¿Cómo obtener estos datos?</h4>
+                <ol>
+                    <li><strong>Bot de Telegram:</strong> Busca @BotFather en Telegram, escribe /newbot y sigue las instrucciones.</li>
+                    <li><strong>Chat ID:</strong> Escribe algo a tu bot, luego visita: <code>https://api.telegram.org/bot[TU_TOKEN]/getUpdates</code></li>
+                    <li><strong>Apps Script:</strong> Mira el archivo README.md para instrucciones.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón de configuración -->
+    <button id="btnConfig" class="btn-config" title="Configuración">⚙️</button>
+
+    <!-- Toast de notificaciones -->
+    <div id="toast" class="toast"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/sheets.js"></script>
+    <script src="js/telegram.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
