@@ -117,7 +117,7 @@ const Sheets = {
 
     // Agregar tarea al Google Sheet via Apps Script
     async addTask(task) {
-        const appsScriptUrl = Config.get('APPS_SCRIPT_URL');
+        const appsScriptUrl = Config.APPS_SCRIPT_URL || Config.get('APPS_SCRIPT_URL');
 
         if (!appsScriptUrl) {
             console.log('No hay URL de Apps Script configurada, guardando solo localmente');
